@@ -1,6 +1,7 @@
+
 import {z} from "zod"
 
-export const CopyList = z.object({
+export const DeleteCard = z.object({
 
     id: z.string(),
     boardId: z.string()

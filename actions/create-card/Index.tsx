@@ -6,6 +6,8 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/create-safe-actions";
 import { CreateCard } from "./schema";
+import { createAuditLog } from "@/lib/create-audit-log";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 const handler = async (
     data:InputType
@@ -44,6 +46,12 @@ const handler = async (
             order:newOrder,
             }
        })
+             await createAuditLog({
+                   entityId:card.id,
+                   entityType: ENTITY_TYPE.CARD,
+                   entityTitle:card.title,
+                   action: ACTION.CREATE,
+               }) 
     } catch (error) {
         error:"Failed to Update"
     }
