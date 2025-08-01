@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import {Info} from "./_component/info";
-import { BoardList } from "../../_components/Board-list";
+import { BoardList } from "./_component/Board-list";
 import { Suspense } from "react";
 
 const OrganizationIdPage = async () => {

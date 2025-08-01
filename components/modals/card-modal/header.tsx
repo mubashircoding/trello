@@ -24,6 +24,9 @@ export const Header = ({
         queryCLient.invalidateQueries({
             queryKey:["card", data.id],
         })
+        queryCLient.invalidateQueries({
+            queryKey:["card-logs", data.id],
+        })
         toast.success(`Card ranamed from "${data.title}" successfully`);
         setTitle(data.title);
     },

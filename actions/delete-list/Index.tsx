@@ -7,6 +7,8 @@ import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/create-safe-actions";
 import { DeleteList } from "./schema";
 import { redirect } from "next/navigation";
+import { createAuditLog } from "@/lib/create-audit-log";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 const handler = async (
     data:InputType
@@ -32,6 +34,13 @@ const handler = async (
             },
             
         })
+             await createAuditLog({
+         entityTitle: list.title,
+         entityId: list.id,
+         entityType: ENTITY_TYPE.LIST,
+         action: ACTION.DELETE,
+
+       })
     } catch (error) {
         error:"Failed to Delete"
     }

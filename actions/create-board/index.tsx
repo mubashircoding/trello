@@ -6,13 +6,22 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/create-safe-actions";
 import { CreateBoard } from "./schema";
+import { createAuditLog } from "@/lib/create-audit-log";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import { incrementAvailableCount, hasAvailableCount } from "@/lib/org-limit";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
   if (!userId || !orgId) {
     return {
-      error: "Unauth",
+      error: "Unautharized",
     };
+  }
+  const canCreate = await hasAvailableCount();
+  if(!canCreate){
+    return{
+      error: "You have reached the limit of free boards you can create."
+    }
   }
   const { title, image } = data;
 
@@ -25,6 +34,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     imageLinkHTML,
     imageUserName,
   });
+
   if (
     !imageId ||
     !imageThumbUrl ||
@@ -49,6 +59,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         imageLinkHTML,
         imageUserName,
       },
+    });
+    await incrementAvailableCount();
+    await createAuditLog({
+      entityTitle: board.title,
+      entityId: board.id,
+      entityType: ENTITY_TYPE.BOARD,
+      action: ACTION.CREATE,
     });
   } catch (error) {
     return {
