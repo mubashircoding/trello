@@ -44,6 +44,7 @@ export const FormPopover = ({
     onError: (error) => {
    
       toast.error(error)
+      proModal.onOpen();
     },
   });
   const onSubmit = (formData: FormData) => {
