@@ -20,7 +20,7 @@ export const BoardList = async () => {
   });
   const availableCount = await getAvailableCount();
   const isPro = await checkSubscription();
-  
+
   return (
     <div className="space-y-4">
       <div className=" flex items-center font-semibold text-lg text-neutral-700">
@@ -45,9 +45,9 @@ export const BoardList = async () => {
             className="aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center hover:opacity-75 transition"
           >
             <p className="text-sm">Create new border</p>
-            <span className="text-xs">{`${
-              MAX_FREE_BOARDS - availableCount
-            } remaining`}</span>
+            <span className="text-xs">{
+              isPro ?"Unlimited" : `${MAX_FREE_BOARDS - availableCount}
+             remaining`}</span>
             <Hint sideOffset={40} description={`Free works`}>
               <HelpCircle className="absolute bottom-2 right-2" />
             </Hint>
