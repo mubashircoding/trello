@@ -68,14 +68,22 @@ const Formpicker = ({ id, errors }: FormPickerProps) => {
               setSelectedImageId(image.id);
             }}
           >
-            <input 
-            type="radio" 
-            id={id} 
-            name={id} 
-            className="hidden"
-            checked={selectedImageId === image.id}
-            disabled={pending}
-            value={`${image.id} | ${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`} 
+            <input
+              // type="radio"
+              // id={id}
+              // name={id}
+              // className="hidden"
+              // checked={selectedImageId === image.id}
+              // disabled={pending}
+              // value={`${image.id} | ${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
+              type="radio"
+              id={`${id}-${image.id}`}
+              name={id}
+              className="hidden"
+              checked={selectedImageId === image.id}
+              disabled={pending}
+              value={`${image.id} | ${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
+              onChange={() => setSelectedImageId(image.id)}
             />
             <Image
               src={image.urls.thumb}
